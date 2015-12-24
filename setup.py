@@ -1,0 +1,17 @@
+from setuptools import setup
+
+
+setup(
+    name='ndbvalid',
+    version='1.0.0',
+    author='Olexander Yermakov',
+    author_email='olexander.yermakov@gmail.com',
+    description='Validation functions for Google App Enging NDB models.',
+    license='MIT',
+    keywords='validation gae ndb google appengine',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License'
+    ]
+)
