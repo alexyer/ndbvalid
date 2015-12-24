@@ -6,6 +6,7 @@ setup(
     version='1.0.0',
     author='Olexander Yermakov',
     author_email='olexander.yermakov@gmail.com',
+    url='https://github.com/alexyer/ndbvalid',
     description='Validation functions for Google App Enging NDB models.',
     license='MIT',
     keywords='validation gae ndb google appengine',
