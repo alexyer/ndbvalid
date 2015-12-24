@@ -2,7 +2,7 @@
 
 
 from unittest import TestCase
-import ndbvalid
+from . import ndbvalid
 import re
 
 
