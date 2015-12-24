@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-                
+
 
 import re
 
@@ -12,7 +12,7 @@ def length(min=None, max=None):
     """
     Length validator.
     The string must have a minimal length of min and maximal length of max characters.
-    
+
     :param min: Minimum length
     :param max: Maximal length
     :type min: int
@@ -25,6 +25,24 @@ def length(min=None, max=None):
             raise NdbValidationError('{} must be less than {} characters'.format(prop, max))
         return None
     return length_validator
+
+
+def number_range(min=None, max=None):
+    """
+    Number range validator.
+    The value must be in the given range inclusive.
+    This will work with any comparable number type.
+
+    :param min: The minimum require value. If not provided, will not be checked.
+    :param min: The maximum require value. If not provided, will not be checked.
+    """
+    def number_range_validator(prop, value):
+        if min and value < min:
+            raise NdbValidationError('{} must be greater than {}'.format(prop, min))
+        if value > max:
+            raise NdbValidationError('{} must be less than {}'.format(prop, max))
+        return None
+    return number_range_validator
 
 
 def regexp(regex, flags=0):

@@ -19,6 +19,26 @@ class TestValidators(TestCase):
 
         self.assertIsNone(validator({}, 'normal string'))
 
+    def test_number_range_validator(self):
+        validator = ndbvalid.number_range(min=7, max=68.69)
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 1)
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 100)
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 1.2)
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 100.30)
+
+        self.assertIsNone(validator({}, 42))
+        self.assertIsNone(validator({}, 42.42))
+        self.assertIsNone(validator({}, 7))
+        self.assertIsNone(validator({}, 68.69))
+
     def test_regex_validator(self):
         validator = ndbvalid.regexp(r'[a-z]+')
 
