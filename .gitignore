@@ -4,6 +4,11 @@ venv
 .tox
 *.egg-info/*
 
+
+# doc
+_build
+_spell
+
 # Vim
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
