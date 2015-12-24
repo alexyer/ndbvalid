@@ -69,3 +69,10 @@ def mac_address():
     MAC address validatior.
     """
     return regexp(r'^(?:[0-9a-fA-f]{2}:){5}[0-9a-fA-F]{2}$', msg='Invalid Mac address')
+
+
+def uuid():
+    """
+    UUID validatior.
+    """
+    return regexp(r'^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$', msg='Invalid UUID')

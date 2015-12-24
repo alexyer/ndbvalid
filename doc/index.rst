@@ -10,3 +10,4 @@ Welcome to ndbvalid's documentation!
 .. autofunction:: ndbvalid.mac_address
 .. autofunction:: ndbvalid.number_range
 .. autofunction:: ndbvalid.regexp
+.. autofunction:: ndbvalid.uuid

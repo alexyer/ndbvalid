@@ -4,6 +4,7 @@
 from unittest import TestCase
 from . import ndbvalid
 import re
+import uuid
 
 
 class TestValidators(TestCase):
@@ -73,3 +74,18 @@ class TestValidators(TestCase):
             validator({}, '00:GC:34:ad:78:0D:')
 
         self.assertIsNone(validator({}, '00:FC:34:ad:78:0D'))
+
+    def test_uuid_validator(self):
+        validator = ndbvalid.uuid()
+        test_uuid = str(uuid.uuid4())
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, test_uuid[0:5])
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, test_uuid * 2)
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, '')
+
+        self.assertIsNone(validator({}, str(uuid.uuid4())))
