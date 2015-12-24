@@ -7,3 +7,4 @@ Welcome to ndbvalid's documentation!
 ====================================
 
 .. autofunction:: ndbvalid.length
+.. autofunction:: ndbvalid.regexp

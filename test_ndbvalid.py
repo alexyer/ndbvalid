@@ -3,6 +3,7 @@
 
 from unittest import TestCase
 import ndbvalid
+import re
 
 
 class TestValidators(TestCase):
@@ -17,3 +18,21 @@ class TestValidators(TestCase):
             validator({}, 'too loooooong string')
 
         self.assertIsNone(validator({}, 'normal string'))
+
+    def test_regex_validator(self):
+        validator = ndbvalid.regexp(r'[a-z]+')
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, '1')
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 'Invalid')
+
+        self.assertIsNone(validator({}, 'valid'))
+
+        validator = ndbvalid.regexp(r'[a-z]+', re.IGNORECASE)
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, '1')
+
+        self.assertIsNone(validator({}, 'Valid'))
