@@ -5,5 +5,5 @@ script:
     - tox
 env:
     - TOXENV=py27
-    - TOXENV=py35
+    - TOXENV=py34
     - TOXENV=coverage
