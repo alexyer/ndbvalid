@@ -45,18 +45,24 @@ def number_range(min=None, max=None):
     return number_range_validator
 
 
-def regexp(regex, flags=0):
+def regexp(regex, flags=0, msg='Invaild input'):
     """
     Regular expression validator.
     String must match given regex.
 
     :param regex: The regular expression string to use.
     :param flags: The regex flags to use, e.g. re.IGNORECASE.
+    :param msg: Error message.
     :type regex: str
     :type flags: int
+    :type msg: str
     """
     def regex_validator(prop, value):
         if not re.match(regex, value, flags=flags):
-            raise NdbValidationError('Invaild input')
+            raise NdbValidationError(msg)
         return None
     return regex_validator
+
+
+def mac_address():
+    return regexp(r'^(?:[0-9a-fA-f]{2}:){5}[0-9a-fA-F]{2}$', msg='Invalid Mac address')

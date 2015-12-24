@@ -56,3 +56,20 @@ class TestValidators(TestCase):
             validator({}, '1')
 
         self.assertIsNone(validator({}, 'Valid'))
+
+    def test_mac_address_validator(self):
+        validator = ndbvalid.mac_address()
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, '00:FC:34:ad:78')
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, '00:FC:34:ad78:0D')
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, '00:FC:34:ad:78:0D:')
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, '00:GC:34:ad:78:0D:')
+
+        self.assertIsNone(validator({}, '00:FC:34:ad:78:0D'))
