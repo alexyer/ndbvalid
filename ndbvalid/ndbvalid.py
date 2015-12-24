@@ -65,4 +65,7 @@ def regexp(regex, flags=0, msg='Invaild input'):
 
 
 def mac_address():
+    """
+    MAC address validatior.
+    """
     return regexp(r'^(?:[0-9a-fA-f]{2}:){5}[0-9a-fA-F]{2}$', msg='Invalid Mac address')
