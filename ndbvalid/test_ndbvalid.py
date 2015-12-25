@@ -162,3 +162,26 @@ class TestValidators(TestCase):
         self.assertIsNone(validator({}, 'user@test.com'))
         self.assertIsNone(validator({}, 'olexander.yermakov@gmail.com'))
         self.assertIsNone(validator({}, 'test42@gmail.com'))
+
+    def test_all(self):
+        validator = ndbvalid._and(ndbvalid.length(min=5), ndbvalid.regexp(r'^[0-9]+$'))
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, '123')
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, '123abc')
+
+        self.assertIsNone(validator({}, '12345'))
+
+    def test_or(self):
+        validator = ndbvalid._or(ndbvalid.length(min=5, max=6), ndbvalid.ip_address(), ndbvalid.regexp(r'^[0-9]+$'))
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 'abc')
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 'abcdefgh')
+
+        self.assertIsNone(validator({}, '12345'))
+        self.assertIsNone(validator({}, '12'))
+        self.assertIsNone(validator({}, '123abc'))
+        self.assertIsNone(validator({}, '127.0.0.1'))

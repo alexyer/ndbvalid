@@ -6,6 +6,10 @@
 Welcome to ndbvalid's documentation!
 ====================================
 
+Validators
+----------
+Validator functions.
+
 .. autofunction:: ndbvalid.email
 .. autofunction:: ndbvalid.ip_address
 .. autofunction:: ndbvalid.length
@@ -14,3 +18,11 @@ Welcome to ndbvalid's documentation!
 .. autofunction:: ndbvalid.regexp
 .. autofunction:: ndbvalid.url
 .. autofunction:: ndbvalid.uuid
+
+
+Operators
+---------
+Operator functions represent logic operators and used to combine validtors.
+
+.. autofunction:: ndbvalid._and
+.. autofunction:: ndbvalid._or

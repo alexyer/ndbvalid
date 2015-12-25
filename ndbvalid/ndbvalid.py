@@ -142,6 +142,35 @@ def url(require_tld=True):
     return url_validator
 
 
+def _and(*validators):
+    """
+    AND operator.
+    Accepts validator functions as an arguments.
+    Success if valid for every validator on a list or raise error.
+    """
+    def _and_validator(prop, value):
+        for validator in validators:
+            validator(prop, value)
+    return _and_validator
+
+
+def _or(*validators):
+    """
+    OR operator.
+    Accepts validator functions as an arguments.
+    Success if valid at least one validator on a list or raise error.
+    """
+    def _or_validator(prop, value):
+        err = None
+        for validator in validators:
+            try:
+                return validator(prop, value)
+            except NdbValidationError as e:
+                err = e
+        raise err
+    return _or_validator
+
+
 def _validate_hostname(hostname, require_tld=True, allow_ip=False):
     if allow_ip:
         if _check_ipv4(hostname) or _check_ipv6(hostname):
