@@ -1,3 +1,4 @@
+from .ndbvalid import email
 from .ndbvalid import ip_address
 from .ndbvalid import length
 from .ndbvalid import number_range

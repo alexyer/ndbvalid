@@ -6,6 +6,7 @@
 Welcome to ndbvalid's documentation!
 ====================================
 
+.. autofunction:: ndbvalid.email
 .. autofunction:: ndbvalid.ip_address
 .. autofunction:: ndbvalid.length
 .. autofunction:: ndbvalid.mac_address

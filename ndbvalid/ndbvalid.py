@@ -99,6 +99,26 @@ def ip_address(ipv4=True, ipv6=False):
     return ip_address_validator
 
 
+def email():
+    """
+    Email validator.
+    Uses very primitive regular expression
+    and should only be used in instances where you later verify by
+    other means.
+    """
+    def email_validator(prop, value):
+        regex = r'^.+@([^.@][^@]+)$'
+        match = re.match(regex, value)
+
+        if not match:
+            raise NdbValidationError('Inavalid email address')
+
+        if not _validate_hostname(match.group(1)):
+            raise NdbValidationError('Inavalid email address')
+        return None
+    return email_validator
+
+
 def url(require_tld=True):
     """
     Simple regexp based url validation.
@@ -111,9 +131,12 @@ def url(require_tld=True):
     """
     def url_validator(prop, value):
         regex = r'^[a-z]+://(?P<host>[^/:]+)(?P<port>:[0-9]+)?(?P<path>\/.*)?$'
-        host = re.match(regex, value).group('host')
+        match = re.match(regex, value)
 
-        if not _validate_hostname(host, require_tld=require_tld, allow_ip=True):
+        if not match:
+            raise NdbValidationError('Invalid URL')
+
+        if not _validate_hostname(match.group('host'), require_tld=require_tld, allow_ip=True):
             raise NdbValidationError('Invalid URL')
         return None
     return url_validator

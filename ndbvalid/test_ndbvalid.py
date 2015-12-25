@@ -129,6 +129,8 @@ class TestValidators(TestCase):
             validator({}, 'http://{}'.format(host))
         with self.assertRaises(ndbvalid.NdbValidationError):
             validator({}, 'http://localhost')
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 'localhost')
 
         self.assertIsNone(validator({}, 'http://192.168.0.1'))
         self.assertIsNone(validator({}, 'http://google.com'))
@@ -146,3 +148,17 @@ class TestValidators(TestCase):
 
         self.assertFalse(ndbvalid._validate_hostname('192.168.0.1', allow_ip=False))
         self.assertFalse(ndbvalid._validate_hostname('ff:ff:ff:ff:ff:ff:ff:ff', allow_ip=False))
+
+    def test_email_validator(self):
+        validator = ndbvalid.email()
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 'localhost')
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 'google.com')
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 'user@localhost')
+
+        self.assertIsNone(validator({}, 'user@test.com'))
+        self.assertIsNone(validator({}, 'olexander.yermakov@gmail.com'))
+        self.assertIsNone(validator({}, 'test42@gmail.com'))
