@@ -115,3 +115,34 @@ class TestValidators(TestCase):
         self.assertIsNone(validator({}, 'ff:ff:ff:ff:ff:ff:ff:ff'))
         self.assertIsNone(validator({}, 'ff:ff:ff::ff:ff:ff:ff'))
         self.assertIsNone(validator({}, '::ff:ff:ff:ff:ff:ff'))
+
+    def test_url(self):
+        validator = ndbvalid.url()
+
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 'http://192.168.0')
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            host = 'a' * 64
+            validator({}, 'http://{}'.format(host))
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            host = 'a.' * 64
+            validator({}, 'http://{}'.format(host))
+        with self.assertRaises(ndbvalid.NdbValidationError):
+            validator({}, 'http://localhost')
+
+        self.assertIsNone(validator({}, 'http://192.168.0.1'))
+        self.assertIsNone(validator({}, 'http://google.com'))
+        self.assertIsNone(validator({}, 'http://wikipedia.org'))
+        self.assertIsNone(validator({}, 'http://google.com:80/test/path?id=1'))
+
+        validator = ndbvalid.url(require_tld=False)
+        self.assertIsNone(validator({}, 'http://localhost'))
+        self.assertIsNone(validator({}, 'http://google.com'))
+        self.assertIsNone(validator({}, 'http://wikipedia.org'))
+
+    def test_validate_hostname(self):
+        self.assertTrue(ndbvalid._validate_hostname('192.168.0.1', allow_ip=True))
+        self.assertTrue(ndbvalid._validate_hostname('ff:ff:ff:ff:ff:ff:ff:ff', allow_ip=True))
+
+        self.assertFalse(ndbvalid._validate_hostname('192.168.0.1', allow_ip=False))
+        self.assertFalse(ndbvalid._validate_hostname('ff:ff:ff:ff:ff:ff:ff:ff', allow_ip=False))

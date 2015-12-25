@@ -99,6 +99,57 @@ def ip_address(ipv4=True, ipv6=False):
     return ip_address_validator
 
 
+def url(require_tld=True):
+    """
+    Simple regexp based url validation.
+    You probably want to validate the url later by other means if the url
+    must resolve.
+
+    :param require_tld: If True, then the domain nam portion of the URL must contain
+                        a .tld suffix. Set this to false if you want to allow domains
+                        like `localhost`.
+    """
+    def url_validator(prop, value):
+        regex = r'^[a-z]+://(?P<host>[^/:]+)(?P<port>:[0-9]+)?(?P<path>\/.*)?$'
+        host = re.match(regex, value).group('host')
+
+        if not _validate_hostname(host, require_tld=require_tld, allow_ip=True):
+            raise NdbValidationError('Invalid URL')
+        return None
+    return url_validator
+
+
+def _validate_hostname(hostname, require_tld=True, allow_ip=False):
+    if allow_ip:
+        if _check_ipv4(hostname) or _check_ipv6(hostname):
+            return True
+
+    try:
+        hostname = hostname.encode('idna')
+    except UnicodeError:
+        return False
+
+    hostname = hostname.decode('ascii')
+
+    parts = hostname.split('.')
+
+    hostname_part = re.compile(r'^(xn-|[a-z0-9]+)(-[a-z0-9]+)*$', re.IGNORECASE)
+
+    for part in parts:
+        if not part or len(part) > 63:
+            return False
+        if not hostname_part.match(part):
+            return False
+
+    tld_part = re.compile(r'^([a-z]{2,20}|xn--([a-z0-9]+-)*[a-z0-9]+)$', re.IGNORECASE)
+
+    if require_tld:
+        if len(parts) < 2 or not tld_part.match(parts[-1]):
+            return False
+
+    return True
+
+
 def _check_ipv4(address):
     parts = address.split('.')
 
