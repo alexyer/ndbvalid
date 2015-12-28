@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='ndbvalid',
-    version='1.6.0',
+    version='1.6.1',
     author='Olexander Yermakov',
     author_email='olexander.yermakov@gmail.com',
     url='https://github.com/alexyer/ndbvalid',
