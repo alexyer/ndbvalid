@@ -1,6 +1,8 @@
 from .ndbvalid import _and
 from .ndbvalid import _or
 
+from .ndbvalid import NdbValidationError
+
 from .ndbvalid import email
 from .ndbvalid import ip_address
 from .ndbvalid import length
